@@ -10,21 +10,21 @@
         }
     ],
     "require": {
-        "php": "^7.1",
-        "illuminate/support": "5.8.*"
+        "illuminate/support": "5.8.*",
+        "guzzlehttp/guzzle": "~6.0"
     },
     "autoload": {
         "psr-4": {
-            "Rensphilipsen\\NSApi\\" : "src/"
+            "RensPhilipsen\\NSApi\\" : "src/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Rensphilipsen\\NSApi\\NSApiServiceProvider"
+                "RensPhilipsen\\NSApi\\NSApiServiceProvider"
             ],
             "aliases": {
-                "NSApi": "Rensphilipsen\\NSApi\\Facade"
+                "NSApi": "RensPhilipsen\\NSApi\\Facade"
             }
         }
     }
