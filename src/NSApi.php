@@ -31,14 +31,27 @@ class NSApi
         $this->client = new Client($options);
     }
 
-    private function request(string $uri, array $data): void
+    /**
+     * Do a request to the API
+     *
+     * @param string $uri
+     * @param array $params
+     * @return mixed
+     */
+    private function request(string $uri, array $params = [])
     {
-        $this->client->get($uri);
+        $response = $this->client->request('GET', $uri, ['query' => $params]);
+        return json_decode($response->getBody()->getContents());
     }
 
-    public function stations(): void
+    /**
+     * Retrieve all stations
+     *
+     * @return mixed
+     */
+    public function stations()
     {
-        
+        return $this->request('stations');
     }
 
 }
