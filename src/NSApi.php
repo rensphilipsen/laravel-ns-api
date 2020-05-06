@@ -2,56 +2,75 @@
 
 namespace RensPhilipsen\NSApi;
 
-use GuzzleHttp\Client;
+use GuzzleHttp\Client as GuzzleClient;
+use Rensphilipsen\NSApi\Actions\ManagesStations;
 
 class NSApi
 {
+    use MakesHttpRequests,
+        ManagesStations;
 
     /**
      * Client use to make requests
      *
-     * @var Client
+     * @var GuzzleClient
      */
-    private Client $client;
+    protected GuzzleClient $guzzle;
+
+    /**
+     * API Key of NS
+     *
+     * @var string
+     */
+    protected string $apiKey;
+
+    /**
+     * API Url of NS
+     *
+     * @var string
+     */
+    protected string $apiUrl;
 
     /**
      * NSApi constructor.
      */
     public function __construct()
     {
+        $this->apiKey = config('nsapi.api_key');
+        $this->apiUrl = config('nsapi.api_url');
+        $this->setupGuzzleClient();
+    }
+
+    /**
+     * Setup the Guzzle Client
+     */
+    protected function setupGuzzleClient()
+    {
         $headers = [
-            'Ocp-Apim-Subscription-Key' => config('nsapi.api_key')
+            'Ocp-Apim-Subscription-Key' => $this->apiKey
         ];
 
         $options = [
-            'base_uri' => config('nsapi.api_url'),
+            'base_uri' => $this->apiUrl,
             'headers'  => $headers,
         ];
 
-        $this->client = new Client($options);
+        $this->guzzle = new GuzzleClient($options);
     }
 
     /**
-     * Do a request to the API
+     * Transform the items of the collection to the given class.
      *
-     * @param string $uri
-     * @param array $params
-     * @return mixed
+     * @param  array $collection
+     * @param  string $class
+     * @param  array $extraData
+     * @return array
      */
-    private function request(string $uri, array $params = [])
+    protected function transformCollection($collection, $class, $extraData = [])
     {
-        $response = $this->client->request('GET', $uri, ['query' => $params]);
-        return json_decode($response->getBody()->getContents());
-    }
-
-    /**
-     * Retrieve all stations
-     *
-     * @return mixed
-     */
-    public function stations()
-    {
-        return $this->request('stations');
+        return array_map(function ($data) use ($class, $extraData) {
+            return new $class($data + $extraData);
+        }, $collection);
     }
 
 }
