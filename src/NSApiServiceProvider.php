@@ -9,8 +9,6 @@ class NSApiServiceProvider extends ServiceProvider
 
     public function register(): void
     {
-        $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'nsapi');
-
         $this->app->bind('ns-api', function($app) {
             return new NSApi();
         });

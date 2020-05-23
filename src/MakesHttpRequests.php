@@ -89,9 +89,9 @@ trait MakesHttpRequests
 
         if ($response->getStatusCode() != 200) return $this->handleRequestError($response);
 
-        $responseBody = (string) $response->getBody();
+        $data = json_decode($response->getBody()->getContents(), true);
 
-        return json_decode($responseBody, true) ?: $responseBody;
+        return $data['payload'];
     }
 
     /**

@@ -20,16 +20,4 @@ trait ManagesStations
         );
     }
 
-    /**
-     * Get single station
-     *
-     * @param string $stationId
-     */
-    public function getStation(string $stationId)
-    {
-
-    }
-
-
-
 }

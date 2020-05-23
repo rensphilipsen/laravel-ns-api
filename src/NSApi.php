@@ -3,33 +3,30 @@
 namespace RensPhilipsen\NSApi;
 
 use GuzzleHttp\Client as GuzzleClient;
-use Rensphilipsen\NSApi\Actions\ManagesStations;
 
 class NSApi
 {
     use MakesHttpRequests,
-        ManagesStations;
+        Actions\ManagesStations;
 
     /**
      * Client use to make requests
-     *
-     * @var GuzzleClient
      */
-    protected GuzzleClient $guzzle;
+    protected $guzzle;
 
     /**
      * API Key of NS
      *
      * @var string
      */
-    protected string $apiKey;
+    protected $apiKey;
 
     /**
      * API Url of NS
      *
      * @var string
      */
-    protected string $apiUrl;
+    protected $apiUrl;
 
     /**
      * NSApi constructor.
