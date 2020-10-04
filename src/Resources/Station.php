@@ -15,14 +15,14 @@ class Station
     /**
      * UICCode of the station
      *
-     * @var integer
+     * @var int
      */
     public $uicCode;
 
     /**
      * EVACode of the station
      *
-     * @var integer
+     * @var int
      */
     public $evaCode;
 
@@ -78,14 +78,14 @@ class Station
     /**
      * Latitude of the station
      *
-     * @var double
+     * @var float
      */
     public $latitude;
 
     /**
      * Longitude of the station
      *
-     * @var double
+     * @var float
      */
     public $longitude;
 

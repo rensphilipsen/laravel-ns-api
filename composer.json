@@ -12,7 +12,8 @@
     "require": {
         "illuminate/support": "^7.0",
         "guzzlehttp/guzzle": "^6.0",
-        "ext-json": "*"
+        "ext-json": "*",
+        "laravel-frontend-presets/tall": "^1.7"
     },
     "autoload": {
         "psr-4": {

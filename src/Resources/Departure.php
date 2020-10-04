@@ -2,93 +2,103 @@
 
 namespace RensPhilipsen\NSApi\Resources;
 
-class Station
+use Illuminate\Support\Carbon;
+
+class Departure
 {
 
     /**
-     * Code of the station
+     * Direction of the departure
      *
      * @var string
      */
-    public $code;
+    public $direction;
 
     /**
-     * UICCode of the station
-     *
-     * @var integer
-     */
-    public $uicCode;
-
-    /**
-     * EVACode of the station
-     *
-     * @var integer
-     */
-    public $evaCode;
-
-    /**
-     * Long name of the station
-     *
-     * @var string
-     */
-    public $longName;
-
-    /**
-     * Short name of the station
-     *
-     * @var string
-     */
-    public $shortName;
-
-    /**
-     * Name of the station
+     * Name of the departure
      *
      * @var string
      */
     public $name;
 
     /**
-     * Does the station have facilities
-     *
-     * @var bool
-     */
-    public $hasFacilities;
-
-    /**
-     * Does the station have departures
-     *
-     * @var bool
-     */
-    public $hasDepartures;
-
-    /**
-     * Does the station have travel assistance
-     *
-     * @var bool
-     */
-    public $hasTravelAssistance;
-
-    /**
-     * Country of the station
+     * Planned date time of the departure
      *
      * @var string
      */
-    public $country;
+    public $plannedDateTime;
 
     /**
-     * Latitude of the station
+     * Planned timezone offset of the departure
      *
-     * @var double
+     * @var int
      */
-    public $latitude;
+    public $plannedTimeZoneOffset;
 
     /**
-     * Longitude of the station
+     * Actual date time of the departure
      *
-     * @var double
+     * @var string
      */
-    public $longitude;
+    public $actualDateTime;
 
+    /**
+     * Actual timezone offset of the departure
+     *
+     * @var int
+     */
+    public $actualTimeZoneOffset;
+
+    /**
+     * Planned track of the departure
+     *
+     * @var string
+     */
+    public $plannedTrack;
+
+    /**
+     * Actual track of the departure
+     *
+     * @var string
+     */
+    public $actualTrack;
+
+
+    /**
+     * Product of the departure
+     *
+     * @var Product
+     */
+    public $product;
+
+    /**
+     * Train category of the departure
+     *
+     * @var string
+     */
+    public $trainCategory;
+
+    /**
+     *  Is the departure cancelled
+     *
+     * @var bool
+     */
+    public $cancelled;
+
+    /**
+     * Route stations of the departure
+     *
+     * @var array
+     */
+    public $routeStations;
+
+
+    /**
+     * Status of the departure
+     *
+     * @var string
+     */
+    public $status;
 
     public function __construct(array $attributes)
     {
@@ -98,17 +108,27 @@ class Station
 
     public function fill(array $attributes)
     {
-        $this->code = $attributes['code'];
-        $this->uicCode = (int)$attributes['UICCode'];
-        $this->evaCode = (int)$attributes['EVACode'];
-        $this->longName = $attributes['namen']['lang'];
-        $this->shortName = $attributes['namen']['kort'];
-        $this->name = $attributes['namen']['middel'];
-        $this->hasFacilities = $attributes['heeftFaciliteiten'] ?: false;
-        $this->hasDepartures = $attributes['heeftVertrektijden'] ?: false;
-        $this->hasTravelAssistance = $attributes['heeftReisassistentie'] ?: false;
-        $this->country = $attributes['land'];
-        $this->latitude = $attributes['lat'];
-        $this->longitude = $attributes['lng'];
+        $this->direction = $attributes['direction'];
+        $this->name = $attributes['name'];
+        $this->plannedDateTime = $attributes['plannedDateTime'] ?? null;
+        $this->plannedTimeZoneOffset = $attributes['plannedTimeZoneOffset'] ?? null;
+        $this->actualDateTime = $attributes['actualDateTime'] ?? null;
+        $this->actualTimeZoneOffset = $attributes['actualTimeZoneOffset'] ?? null;
+        $this->plannedTrack = $attributes['plannedTrack'] ?? null;
+        $this->actualTrack = $attributes['actualTrack'] ?? null;
+        $this->product = new Product($attributes['product']) ?? null;
+        $this->trainCategory = $attributes['trainCategory'];
+        $this->cancelled = $attributes['cancelled'] ?? null;
+        $this->routeStations = $attributes['routeStations'] ?? null;
+        $this->cancelled = $attributes['cancelled'] ?? null;
+        $this->status = $attributes['departureStatus'] ?? null;
+    }
+
+    public function getDelay()
+    {
+        $plannedDateTime = Carbon::parse($this->plannedDateTime);
+        $actualDateTime = Carbon::parse($this->actualDateTime);
+        $difference = $plannedDateTime->diffInMinutes($actualDateTime);
+        return $difference > 0 ? $difference : null;
     }
 }
