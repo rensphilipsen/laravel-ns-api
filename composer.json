@@ -1,32 +1,31 @@
 {
-    "name": "rensphilipsen/laravel-ns-api",
-    "description": "A Laravel wrapper for the Nederlandse Spoorwegen (NS) API",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Rens Philipsen",
-            "email": "rens.philipsen@screenlink.nl",
-            "role": "Developer"
-        }
-    ],
-    "require": {
-        "illuminate/support": "^8.0",
-        "guzzlehttp/guzzle": "^7.0",
-        "ext-json": "*"
-    },
-    "autoload": {
-        "psr-4": {
-            "RensPhilipsen\\NSApi\\" : "src/"
-        }
-    },
-    "extra": {
-        "laravel": {
-            "providers": [
-                "RensPhilipsen\\NSApi\\NSApiServiceProvider"
-            ],
-            "aliases": {
-                "NSApi": "RensPhilipsen\\NSApi\\Facade"
-            }
-        }
+  "name": "rensphilipsen/laravel-ns-api",
+  "description": "A Laravel wrapper for the Nederlandse Spoorwegen (NS) API",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Rens Philipsen",
+      "email": "rens.philipsen@screenlink.nl",
+      "role": "Developer"
     }
+  ],
+  "require": {
+    "guzzlehttp/guzzle": "^7.5",
+    "ext-json": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "RensPhilipsen\\NSApi\\": "src/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "RensPhilipsen\\NSApi\\NSApiServiceProvider"
+      ],
+      "aliases": {
+        "NSApi": "RensPhilipsen\\NSApi\\Facade"
+      }
+    }
+  }
 }
