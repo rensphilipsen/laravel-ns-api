@@ -4,60 +4,60 @@ namespace RensPhilipsen\NSApi\Resources;
 
 use Illuminate\Support\Carbon;
 
-class Departure
+class Arrival
 {
 
     /**
-     * Direction of the departure
+     * Origin of the arrival
      *
      * @var string
      */
-    public $direction;
+    public $origin;
 
     /**
-     * Name of the departure
+     * Name of the arrival
      *
      * @var string
      */
     public $name;
 
     /**
-     * Planned date time of the departure
+     * Planned date time of the arrival
      *
      * @var string
      */
     public $plannedDateTime;
 
     /**
-     * Planned timezone offset of the departure
+     * Planned timezone offset of the arrival
      *
      * @var int
      */
     public $plannedTimeZoneOffset;
 
     /**
-     * Actual date time of the departure
+     * Actual date time of the arrival
      *
      * @var string
      */
     public $actualDateTime;
 
     /**
-     * Actual timezone offset of the departure
+     * Actual timezone offset of the arrival
      *
      * @var int
      */
     public $actualTimeZoneOffset;
 
     /**
-     * Planned track of the departure
+     * Planned track of the arrival
      *
      * @var string
      */
     public $plannedTrack;
 
     /**
-     * Actual track of the departure
+     * Actual track of the arrival
      *
      * @var string
      */
@@ -65,36 +65,28 @@ class Departure
 
 
     /**
-     * Product of the departure
+     * Product of the arrival
      *
      * @var Product
      */
     public $product;
 
     /**
-     * Train category of the departure
+     * Train category of the arrival
      *
      * @var string
      */
     public $trainCategory;
 
     /**
-     *  Is the departure cancelled
+     *  Is the arrival cancelled
      *
      * @var bool
      */
     public $cancelled;
 
     /**
-     * Route stations of the departure
-     *
-     * @var array
-     */
-    public $routeStations;
-
-
-    /**
-     * Status of the departure
+     * Status of the arrival
      *
      * @var string
      */
@@ -108,7 +100,7 @@ class Departure
 
     public function fill(array $attributes)
     {
-        $this->direction = $attributes['direction'];
+        $this->origin = $attributes['origin'];
         $this->name = $attributes['name'];
         $this->plannedDateTime = $attributes['plannedDateTime'] ?? null;
         $this->plannedTimeZoneOffset = $attributes['plannedTimeZoneOffset'] ?? null;
@@ -119,8 +111,7 @@ class Departure
         $this->product = new Product($attributes['product']) ?? null;
         $this->trainCategory = $attributes['trainCategory'];
         $this->cancelled = $attributes['cancelled'] ?? null;
-        $this->routeStations = $attributes['routeStations'] ?? null;
-        $this->status = $attributes['departureStatus'] ?? null;
+        $this->status = $attributes['arrivalStatus'] ?? null;
     }
 
     public function getDelay()

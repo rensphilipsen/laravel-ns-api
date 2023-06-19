@@ -9,6 +9,8 @@ class NSApiServiceProvider extends ServiceProvider
 
     public function register(): void
     {
+        $this->mergeConfigFrom(__DIR__ . '/../config/nsapi.php', 'nsapi');
+
         $this->app->bind('ns-api', function($app) {
             return new NSApi();
         });
@@ -17,7 +19,7 @@ class NSApiServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->publishes([
-            __DIR__.'/../config/config.php' => config_path('nsapi.php'),
+            __DIR__.'/../config/nsapi.php' => config_path('nsapi.php'),
         ], 'config');
     }
 

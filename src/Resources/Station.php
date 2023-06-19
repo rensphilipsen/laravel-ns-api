@@ -2,8 +2,11 @@
 
 namespace RensPhilipsen\NSApi\Resources;
 
+use Rensphilipsen\NSApi\Actions\ManagesStations;
+
 class Station
 {
+    use ManagesStations;
 
     /**
      * Code of the station
