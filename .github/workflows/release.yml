@@ -1,0 +1,48 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+      - '*.*.*'
+
+permissions:
+  attestations: write
+  contents: write
+  id-token: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5'
+          coverage: none
+          tools: composer:v2
+
+      - name: Install dependencies
+        run: composer update --with-all-dependencies
+
+      - name: Run tests
+        run: composer test
+
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+
+      - name: Generate release checksums
+        run: |
+          git archive --format=tar.gz --output source.tar.gz "$GITHUB_REF_NAME"
+          shasum -a 256 source.tar.gz > checksums.txt
+
+      - name: Attest release provenance
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: checksums.txt

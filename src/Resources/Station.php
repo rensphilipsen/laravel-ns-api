@@ -2,12 +2,8 @@
 
 namespace RensPhilipsen\NSApi\Resources;
 
-use Rensphilipsen\NSApi\Actions\ManagesStations;
-
 class Station
 {
-    use ManagesStations;
-
     /**
      * Code of the station
      *
@@ -101,17 +97,19 @@ class Station
 
     public function fill(array $attributes)
     {
-        $this->code = $attributes['code'];
-        $this->uicCode = (int)$attributes['UICCode'];
-        $this->evaCode = (int)$attributes['EVACode'];
-        $this->longName = $attributes['namen']['lang'];
-        $this->shortName = $attributes['namen']['kort'];
-        $this->name = $attributes['namen']['middel'];
-        $this->hasFacilities = $attributes['heeftFaciliteiten'] ?: false;
-        $this->hasDepartures = $attributes['heeftVertrektijden'] ?: false;
-        $this->hasTravelAssistance = $attributes['heeftReisassistentie'] ?: false;
-        $this->country = $attributes['land'];
-        $this->latitude = $attributes['lat'];
-        $this->longitude = $attributes['lng'];
+        $names = $attributes['namen'] ?? [];
+
+        $this->code = $attributes['code'] ?? null;
+        $this->uicCode = isset($attributes['UICCode']) ? (int) $attributes['UICCode'] : null;
+        $this->evaCode = isset($attributes['EVACode']) ? (int) $attributes['EVACode'] : null;
+        $this->longName = $names['lang'] ?? null;
+        $this->shortName = $names['kort'] ?? null;
+        $this->name = $names['middel'] ?? null;
+        $this->hasFacilities = (bool) ($attributes['heeftFaciliteiten'] ?? false);
+        $this->hasDepartures = (bool) ($attributes['heeftVertrektijden'] ?? false);
+        $this->hasTravelAssistance = (bool) ($attributes['heeftReisassistentie'] ?? false);
+        $this->country = $attributes['land'] ?? null;
+        $this->latitude = $attributes['lat'] ?? null;
+        $this->longitude = $attributes['lng'] ?? null;
     }
 }

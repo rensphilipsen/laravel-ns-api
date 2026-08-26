@@ -62,12 +62,12 @@ class Product
 
     public function fill(array $attributes)
     {
-        $this->number = $attributes['number'];
-        $this->categoryCode = $attributes['categoryCode'];
-        $this->shortCategoryName = $attributes['shortCategoryName'];
-        $this->longCategoryName = $attributes['longCategoryName'];
-        $this->operatorCode = $attributes['operatorCode'];
-        $this->operatorName = $attributes['operatorName'];
-        $this->type = $attributes['type'];
+        $this->number = $attributes['number'] ?? null;
+        $this->categoryCode = $attributes['categoryCode'] ?? null;
+        $this->shortCategoryName = $attributes['shortCategoryName'] ?? null;
+        $this->longCategoryName = $attributes['longCategoryName'] ?? null;
+        $this->operatorCode = $attributes['operatorCode'] ?? null;
+        $this->operatorName = $attributes['operatorName'] ?? null;
+        $this->type = $attributes['type'] ?? null;
     }
 }

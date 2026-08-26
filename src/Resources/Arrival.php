@@ -100,22 +100,26 @@ class Arrival
 
     public function fill(array $attributes)
     {
-        $this->origin = $attributes['origin'];
-        $this->name = $attributes['name'];
+        $this->origin = $attributes['origin'] ?? null;
+        $this->name = $attributes['name'] ?? null;
         $this->plannedDateTime = $attributes['plannedDateTime'] ?? null;
         $this->plannedTimeZoneOffset = $attributes['plannedTimeZoneOffset'] ?? null;
         $this->actualDateTime = $attributes['actualDateTime'] ?? null;
         $this->actualTimeZoneOffset = $attributes['actualTimeZoneOffset'] ?? null;
         $this->plannedTrack = $attributes['plannedTrack'] ?? null;
         $this->actualTrack = $attributes['actualTrack'] ?? null;
-        $this->product = new Product($attributes['product']) ?? null;
-        $this->trainCategory = $attributes['trainCategory'];
+        $this->product = isset($attributes['product']) && is_array($attributes['product']) ? new Product($attributes['product']) : null;
+        $this->trainCategory = $attributes['trainCategory'] ?? null;
         $this->cancelled = $attributes['cancelled'] ?? null;
         $this->status = $attributes['arrivalStatus'] ?? null;
     }
 
     public function getDelay()
     {
+        if ($this->plannedDateTime === null || $this->actualDateTime === null) {
+            return null;
+        }
+
         $plannedDateTime = Carbon::parse($this->plannedDateTime);
         $actualDateTime = Carbon::parse($this->actualDateTime);
         $difference = $plannedDateTime->diffInMinutes($actualDateTime);

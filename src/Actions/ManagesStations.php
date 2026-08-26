@@ -1,6 +1,6 @@
 <?php
 
-namespace Rensphilipsen\NSApi\Actions;
+namespace RensPhilipsen\NSApi\Actions;
 
 use RensPhilipsen\NSApi\MakesHttpRequests;
 use RensPhilipsen\NSApi\TransformsCollections;

@@ -10,12 +10,28 @@
     }
   ],
   "require": {
-    "guzzlehttp/guzzle": "^7.5",
-    "ext-json": "*"
+    "php": "^8.1",
+    "ext-json": "*",
+    "guzzlehttp/guzzle": "^7.8 || ^8.0",
+    "illuminate/support": "^10.0 || ^11.0 || ^12.0 || ^13.0"
+  },
+  "require-dev": {
+    "phpstan/phpstan": "^2.1",
+    "phpunit/phpunit": "^11.5"
+  },
+  "scripts": {
+    "analyse": "vendor/bin/phpstan analyse",
+    "test": "vendor/bin/phpunit",
+    "test:coverage": "@php -r \"if (!extension_loaded('xdebug') && !extension_loaded('pcov')) {fwrite(STDOUT, 'No coverage driver available, skipping.\\n'); exit(0);} passthru('XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-clover coverage.xml', $code); exit($code);\""
   },
   "autoload": {
     "psr-4": {
       "RensPhilipsen\\NSApi\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "RensPhilipsen\\NSApi\\Tests\\": "tests/"
     }
   },
   "extra": {
@@ -24,7 +40,7 @@
         "RensPhilipsen\\NSApi\\NSApiServiceProvider"
       ],
       "aliases": {
-        "NSApi": "RensPhilipsen\\NSApi\\Facade"
+        "NSApi": "RensPhilipsen\\NSApi\\Facades\\NSApi"
       }
     }
   }

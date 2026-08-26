@@ -9,10 +9,10 @@ class NotFoundException extends Exception
     /**
      * Create a new exception instance.
      *
-     * @return void
+     * @param string|null $message
      */
-    public function __construct()
+    public function __construct(?string $message = null)
     {
-        parent::__construct('The resource you are looking for could not be found.');
+        parent::__construct($message ?: 'The resource you are looking for could not be found.');
     }
 }

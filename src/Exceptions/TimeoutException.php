@@ -9,9 +9,9 @@ class TimeoutException extends Exception
     /**
      * The output returned from the operation.
      *
-     * @var array
+    * @var mixed
      */
-    public array $output;
+    public $output;
 
     /**
      * Create a new exception instance.
@@ -28,7 +28,7 @@ class TimeoutException extends Exception
     /**
      * The output returned from the operation.
      *
-     * @return array
+     * @return mixed
      */
     public function output()
     {

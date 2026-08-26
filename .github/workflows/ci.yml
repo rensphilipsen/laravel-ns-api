@@ -1,0 +1,129 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - develop
+
+jobs:
+  test:
+    name: PHP ${{ matrix.php }} | Guzzle ${{ matrix.guzzle }} | Illuminate ${{ matrix.illuminate }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - php: '8.4'
+            guzzle: '^7.8'
+            illuminate: '^10.0'
+          - php: '8.5'
+            guzzle: '^8.0'
+            illuminate: '^13.0'
+          - php: '8.5'
+            guzzle: '^7.8'
+            illuminate: '^13.0'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+          tools: composer:v2
+
+      - name: Validate composer files
+        run: composer validate --strict
+
+      - name: Install dependencies for matrix
+        run: |
+          composer update --with-all-dependencies \
+            guzzlehttp/guzzle:${{ matrix.guzzle }} \
+            illuminate/support:${{ matrix.illuminate }}
+
+      - name: Run tests
+        run: composer test
+
+  quality:
+    name: Composer integrity checks
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5'
+          coverage: none
+          tools: composer:v2
+
+      - name: Validate composer files
+        run: composer validate --strict
+
+      - name: Install dependencies
+        run: composer update --with-all-dependencies
+
+      - name: Audit dependencies
+        run: composer audit
+
+  static-analysis:
+    name: Static analysis (PHPStan)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5'
+          coverage: none
+          tools: composer:v2
+
+      - name: Install dependencies
+        run: composer update --with-all-dependencies
+
+      - name: Run static analysis
+        run: composer analyse
+
+  coverage:
+    name: Coverage report
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5'
+          coverage: xdebug
+          tools: composer:v2
+
+      - name: Install dependencies
+        run: composer update --with-all-dependencies
+
+      - name: Generate coverage
+        run: composer test:coverage
+
+      - name: Upload coverage artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: clover-coverage
+          path: coverage.xml
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        continue-on-error: true
+        with:
+          files: coverage.xml
+          flags: unittests
+          fail_ci_if_error: false

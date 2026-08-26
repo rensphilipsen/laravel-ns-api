@@ -28,7 +28,7 @@ class RouteStation
 
     public function fill(array $attributes)
     {
-        $this->uicCode = $attributes['uicCode'];
-        $this->mediumName = $attributes['mediumName'];
+        $this->uicCode = $attributes['uicCode'] ?? null;
+        $this->mediumName = $attributes['mediumName'] ?? null;
     }
 }
