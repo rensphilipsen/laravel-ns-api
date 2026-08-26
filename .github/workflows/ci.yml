@@ -39,11 +39,14 @@ jobs:
       - name: Validate composer files
         run: composer validate --strict
 
-      - name: Install dependencies for matrix
+      - name: Apply matrix dependency constraints
         run: |
-          composer update --with-all-dependencies \
+          composer require --no-interaction --no-update \
             guzzlehttp/guzzle:${{ matrix.guzzle }} \
             illuminate/support:${{ matrix.illuminate }}
+
+      - name: Install dependencies for matrix
+        run: composer update --with-all-dependencies
 
       - name: Run tests
         run: composer test
